@@ -1,0 +1,28 @@
+# Examples and tests
+example.js
+example.html
+test/
+
+# Notes
+LEARNINGS.md
+
+# Git files
+.git
+.gitignore
+
+# Editor configs
+.vscode/
+.idea/
+*.sublime-*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+.env.* 

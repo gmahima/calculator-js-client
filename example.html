@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator Client Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      padding: 8px;
+      width: 100%;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculator Client Example</h1>
+  
+  <div class="form-group">
+    <label for="num1">First Number:</label>
+    <input type="number" id="num1" value="10">
+  </div>
+  
+  <div class="form-group">
+    <label for="num2">Second Number:</label>
+    <input type="number" id="num2" value="5">
+  </div>
+  
+  <div>
+    <button id="addBtn">Add</button>
+    <button id="subtractBtn">Subtract</button>
+  </div>
+  
+  <div class="result" id="result" style="display: none;">
+    <h3>Result:</h3>
+    <pre id="resultData"></pre>
+  </div>
+  
+  <div class="error" id="error" style="display: none;"></div>
+  
+  <script src="./index.js"></script>
+  <script>
+    // Create client instance
+    const calculator = new CalculatorClient();
+    
+    // DOM elements
+    const num1Input = document.getElementById('num1');
+    const num2Input = document.getElementById('num2');
+    const addBtn = document.getElementById('addBtn');
+    const subtractBtn = document.getElementById('subtractBtn');
+    const resultDiv = document.getElementById('result');
+    const resultData = document.getElementById('resultData');
+    const errorDiv = document.getElementById('error');
+    
+    // Helper to get input values
+    function getInputValues() {
+      const num1 = parseFloat(num1Input.value);
+      const num2 = parseFloat(num2Input.value);
+      
+      if (isNaN(num1) || isNaN(num2)) {
+        throw new Error('Please enter valid numbers');
+      }
+      
+      return { num1, num2 };
+    }
+    
+    // Display result
+    function displayResult(data) {
+      resultData.textContent = JSON.stringify(data, null, 2);
+      resultDiv.style.display = 'block';
+      errorDiv.style.display = 'none';
+    }
+    
+    // Display error
+    function displayError(message) {
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      resultDiv.style.display = 'none';
+    }
+    
+    // Add button click handler
+    addBtn.addEventListener('click', async () => {
+      try {
+        const { num1, num2 } = getInputValues();
+        const result = await calculator.add(num1, num2);
+        displayResult(result);
+      } catch (error) {
+        displayError(error.message);
+      }
+    });
+    
+    // Subtract button click handler
+    subtractBtn.addEventListener('click', async () => {
+      try {
+        const { num1, num2 } = getInputValues();
+        const result = await calculator.subtract(num1, num2);
+        displayResult(result);
+      } catch (error) {
+        displayError(error.message);
+      }
+    });
+  </script>
+</body>
+</html> 
